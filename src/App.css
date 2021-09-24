@@ -36,3 +36,42 @@
     transform: rotate(360deg);
   }
 }
+.split {
+  /* height: 100%;
+  width: 49%;
+  position: fixed;
+  z-index: 1; */
+  /* top: 10%; */
+  /* overflow-x: hidden;
+  padding-top: 20px; */
+}
+/* .left {
+  left: 0;
+}
+.right {
+  right: 0;
+}
+.table{
+  width: 60%;
+  border: 2px solid black;
+  padding: 15px;
+} */
+
+th, td {
+  padding: 15px;
+}
+.icon img {
+  width: 2rem;
+  height: 2rem;
+}
+.check{
+    display: block;
+    min-height: 1.5rem;
+    padding-left: 15.5em;
+    margin-bottom: 0.125rem
+  }
+ .form-check-inputvalue {
+    float: left;
+    margin-left: 12.5em;
+    margin-right: 41px
+  }
