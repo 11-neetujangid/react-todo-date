@@ -1,17 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal } from "react-bootstrap";
 import {
-    updateTodo, deleteTodo, checkBoxData, setTodo, complete,
+    updateTodo, deleteTodo, checkBoxData, setTodo, complete, selectedDateData
 } from "../Actions/action";
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const ViewData = () => {
     const dispatch = useDispatch();
+    const [startDate, setStartDate] = useState(new Date());
+
     const todos = useSelector((state) => state.todos)
     const todo = useSelector((state) => state.todo);
     const mark = useSelector((state) => state.mark);
     const checkValue = useSelector((state) => state.check);
     const completeData = useSelector((state) => state.complete);
+    console.log(completeData)
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -37,6 +42,12 @@ const ViewData = () => {
     }
     const onClickCompleteButton = () => {
         dispatch(complete(mark));
+    }
+    const onSelectDate = (date) => {
+        setStartDate(date);
+        const today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()
+        console.log(today)
+        dispatch(selectedDateData({ selectDate: today }));
     }
     return (
         <div className="App">
@@ -95,7 +106,11 @@ const ViewData = () => {
                 </> :
                 checkValue === "viewComplete" ?
                     <>
-                        <h2>Completed List</h2>
+                        <h2>Completed List</h2><br />
+                        select date: <DatePicker dateFormat='dd/mm/yyyy' selected={startDate} onChange={(date) => onSelectDate(date)} />
+                        {
+
+                        }
                         <table className="table">
                             <thead>
                                 <tr>
@@ -124,7 +139,7 @@ const ViewData = () => {
                         </table>
                     </> : checkValue === "viewOverdue" ?
                         <>
-                            <h2>OverView</h2>
+                            <h2>OverDue Data</h2>
                             <table className="table">
                                 <thead>
                                     <tr>
@@ -153,7 +168,7 @@ const ViewData = () => {
                                     }
                                 </tbody>
                             </table>
-                        </> : ""         
+                        </> : ""
             }
         </div>
     )

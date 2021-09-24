@@ -1,5 +1,5 @@
 import {
-    SET_TODO, ADD_TODO, UPDATE_TODO, DELETE_TODO, CHECK_BOX_DATA, UN_MARK_TODOS, COMPLETED, CHECK_VALUE,
+    SET_TODO, ADD_TODO, UPDATE_TODO, DELETE_TODO, CHECK_BOX_DATA, UN_MARK_TODOS, COMPLETED, CHECK_VALUE, SELECTED_DATE_DATA, complete,
 } from "../Actions/action";
 
 const initialState = {
@@ -59,13 +59,22 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 complete: action.payload,
                 todos: state.todos.filter((todo) => todo.id === action.payload.id),
-
             }
         case CHECK_VALUE:
             console.log(action.payload)
             return {
                 ...state,
                 check: action.payload
+            }
+        case SELECTED_DATE_DATA:
+            console.log(action.payload.selectDate)
+            let value = state.complete.map((data) => data.duedate)
+            console.log(value)
+            return {
+                ...state,
+                complete: state.complete.filter((todo) =>
+                    todo.duedate === action.payload.selectDate
+                )
             }
         default:
             return state;
