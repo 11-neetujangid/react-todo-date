@@ -10,7 +10,6 @@ import "react-datepicker/dist/react-datepicker.css";
 const ViewData = () => {
     const dispatch = useDispatch();
     const [startDate, setStartDate] = useState(new Date());
-
     const todos = useSelector((state) => state.todos)
     const todo = useSelector((state) => state.todo);
     const mark = useSelector((state) => state.mark);
@@ -54,6 +53,7 @@ const ViewData = () => {
             {checkValue === "viewTodo" ?
                 <>
                     <h2>Todos List</h2>
+                    select date: <DatePicker dateFormat='dd/mm/yyyy' selected={startDate} onChange={(date) => onSelectDate(date)} /><br /><br />
                     <table className="table">
                         <thead>
                             <tr>
@@ -66,7 +66,7 @@ const ViewData = () => {
                         </thead>
                         <tbody>
                             {
-                                todos.map((todo) => {
+                                todos.map((todo) => {                             
                                     return (
                                         <tr key={todo.id}>
                                             <td>{todo.duedate}</td>
@@ -108,9 +108,6 @@ const ViewData = () => {
                     <>
                         <h2>Completed List</h2><br />
                         select date: <DatePicker dateFormat='dd/mm/yyyy' selected={startDate} onChange={(date) => onSelectDate(date)} />
-                        {
-
-                        }
                         <table className="table">
                             <thead>
                                 <tr>
@@ -144,9 +141,10 @@ const ViewData = () => {
                                 <thead>
                                     <tr>
                                         <th>Duedate</th>
-                                        <th>Title</th>
-                                        <th>Description</th>
+                                        {/* <th>Title</th>
+                                        <th>Description</th> */}
                                         <th>Completed Date</th>
+                                        <th>Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -158,9 +156,10 @@ const ViewData = () => {
                                                 return (
                                                     <tr key={record.id}>
                                                         <td>{record.duedate}</td>
-                                                        <td>{record.title}</td>
-                                                        <td>{record.description}</td>
+                                                        {/* <td>{record.title}</td>
+                                                        <td>{record.description}</td> */}
                                                         <td>{record.date} overdue</td>
+                                                        <td>{record.time}</td>
                                                     </tr>
                                                 )
                                             }

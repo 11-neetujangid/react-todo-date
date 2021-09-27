@@ -1,5 +1,5 @@
 import {
-    SET_TODO, ADD_TODO, UPDATE_TODO, DELETE_TODO, CHECK_BOX_DATA, UN_MARK_TODOS, COMPLETED, CHECK_VALUE, SELECTED_DATE_DATA, complete,
+    SET_TODO, ADD_TODO, UPDATE_TODO, DELETE_TODO, CHECK_BOX_DATA, COMPLETED, CHECK_VALUE, SELECTED_DATE_DATA,
 } from "../Actions/action";
 
 const initialState = {
@@ -10,7 +10,8 @@ const initialState = {
     todos: [],
     mark: [],
     complete: [],
-    check: ''
+    check: '',
+    select: []
 }
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -55,6 +56,7 @@ const reducer = (state = initialState, action) => {
             }
         case COMPLETED:
             console.log(action.payload)
+            localStorage.setItem('complete', JSON.stringify(action.payload))
             return {
                 ...state,
                 complete: action.payload,
@@ -68,13 +70,23 @@ const reducer = (state = initialState, action) => {
             }
         case SELECTED_DATE_DATA:
             console.log(action.payload.selectDate)
-            let value = state.complete.map((data) => data.duedate)
-            console.log(value)
             return {
                 ...state,
-                complete: state.complete.filter((todo) =>
-                    todo.duedate === action.payload.selectDate
-                )
+                // complete: state.complete.filter((todo) => (
+                //     todo.duedate === action.payload.selectDate
+                // )),
+                // todos: state.todos.filter((todo) => todo.duedate === action.payload.selectDate)
+                // complete: initialState.complete,
+                complete: state.complete.map((data) => {
+                    if (data.duedate === action.payload.selectDate) {
+                        console.log(data.duedate === action.payload.selectDate)
+                        return data
+                    }
+                    else {
+                        return false
+                    }
+                }),
+                todos: state.todos.filter((todo) => todo.duedate === action.payload.selectDate)
             }
         default:
             return state;
