@@ -70,23 +70,15 @@ const reducer = (state = initialState, action) => {
             }
         case SELECTED_DATE_DATA:
             console.log(action.payload.selectDate)
+            const data = JSON.parse(localStorage.getItem('complete'));
+            const todoData = JSON.parse(localStorage.getItem('todo'));
+            console.log(todoData)
             return {
                 ...state,
-                // complete: state.complete.filter((todo) => (
-                //     todo.duedate === action.payload.selectDate
-                // )),
-                // todos: state.todos.filter((todo) => todo.duedate === action.payload.selectDate)
-                // complete: initialState.complete,
-                complete: state.complete.map((data) => {
-                    if (data.duedate === action.payload.selectDate) {
-                        console.log(data.duedate === action.payload.selectDate)
-                        return data
-                    }
-                    else {
-                        return false
-                    }
-                }),
-                todos: state.todos.filter((todo) => todo.duedate === action.payload.selectDate)
+                complete: data.filter((todo) => (
+                    todo.duedate === action.payload.selectDate
+                )),
+                todos: todoData.filter((todo) => todo.duedate === action.payload.selectDate)
             }
         default:
             return state;
