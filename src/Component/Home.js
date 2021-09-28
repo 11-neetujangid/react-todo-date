@@ -25,7 +25,10 @@ const Home = () => {
         dispatch(setTodo({ ...todo, duedate: today }))
     }
     const onHandleClick = () => {
-        dispatch(addTodo({ ...todo, id: new Date().getTime() }));
+        const date = new Date();
+        const today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+        let time = date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
+        dispatch(addTodo({ ...todo, id: new Date().getTime(), curTime: today , time: time}));
         setShow(false);
     }
     const onChangeValue = (e) => {

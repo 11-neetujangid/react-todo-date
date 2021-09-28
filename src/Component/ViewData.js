@@ -10,6 +10,10 @@ import "react-datepicker/dist/react-datepicker.css";
 const ViewData = () => {
     const dispatch = useDispatch();
     const [startDate, setStartDate] = useState(new Date());
+    console.log(startDate)
+    let data = startDate.getDate() + "-" + parseInt(startDate.getMonth() + 1) + "-" + startDate.getFullYear();
+
+
     const todos = useSelector((state) => state.todos)
     const todo = useSelector((state) => state.todo);
     const mark = useSelector((state) => state.mark);
@@ -53,7 +57,7 @@ const ViewData = () => {
             {checkValue === "viewTodo" ?
                 <>
                     <h2>Todos List</h2>
-                    select date: <DatePicker dateFormat='dd/mm/yyyy' selected={startDate} onChange={(date) => onSelectDate(date)} /><br /><br />
+                    select date: <DatePicker dateFormat='dd-MM-yyyy' selected={startDate} onChange={(date) => onSelectDate(date)} /><br /><br />
                     <table className="table">
                         <thead>
                             <tr>
@@ -66,38 +70,40 @@ const ViewData = () => {
                         </thead>
                         <tbody>
                             {
-                                todos.map((todo) => {                             
-                                    return (
-                                        <tr key={todo.id}>
-                                            <td>{todo.duedate}</td>
-                                            <td>{todo.title}</td>
-                                            <td> {todo.description}</td>
-                                            <td>
-                                                <input className="form-check-input" type="checkbox" id="flexCheckDefault" onClick={(e) => onMark(e, todo)} />
-                                            </td>
-                                            <td>
-                                                <Button variant="primary" onClick={handleShow}>Update</Button>
-                                                <Modal show={show} onHide={handleClose}>
-                                                    <Modal.Header closeButton>
-                                                        <Modal.Title>Update Todo </Modal.Title>
-                                                    </Modal.Header>
-                                                    <Modal.Body>
-                                                        <label htmlFor="exampleInput1">DueDate:</label>
-                                                        <input type="text" className="form-control" defaultValue={todo.duedate} onChange={(e) => onChangeInput(e)} />
-                                                        <label htmlFor="exampleInput1">Title:</label>
-                                                        <input type="text" className="form-control" defaultValue={todo.title} name="title" placeholder="Title" onChange={(e) => onChangeInput(e)} />
-                                                        <label htmlFor="exampleInput1">Description:</label>
-                                                        <input type="text" className="form-control" defaultValue={todo.description} name="description" placeholder="Description" onChange={(e) => onChangeInput(e)} />
-                                                    </Modal.Body>
-                                                    <Modal.Footer>
-                                                        <Button variant="secondary" onClick={handleClose}> Close</Button>
-                                                        <Button variant="primary" onClick={() => clickUpdate(todo.id)}>Submit</Button>
-                                                    </Modal.Footer>
-                                                </Modal>{' '}
-                                                <Button variant="primary" onClick={() => clickDelete(todo)}>Delete </Button>
-                                            </td>
-                                        </tr>
-                                    )
+                                todos.map((todo) => {
+                                    if (data === todo.duedate) {
+                                        return (
+                                            <tr key={todo.id}>
+                                                <td>{todo.duedate}</td>
+                                                <td>{todo.title}</td>
+                                                <td> {todo.description}</td>
+                                                <td>
+                                                    <input className="form-check-input" type="checkbox" id="flexCheckDefault" onClick={(e) => onMark(e, todo)} />
+                                                </td>
+                                                <td>
+                                                    <Button variant="primary" onClick={handleShow}>Update</Button>
+                                                    <Modal show={show} onHide={handleClose}>
+                                                        <Modal.Header closeButton>
+                                                            <Modal.Title>Update Todo </Modal.Title>
+                                                        </Modal.Header>
+                                                        <Modal.Body>
+                                                            <label htmlFor="exampleInput1">DueDate:</label>
+                                                            <input type="text" className="form-control" defaultValue={todo.duedate} onChange={(e) => onChangeInput(e)} />
+                                                            <label htmlFor="exampleInput1">Title:</label>
+                                                            <input type="text" className="form-control" defaultValue={todo.title} name="title" placeholder="Title" onChange={(e) => onChangeInput(e)} />
+                                                            <label htmlFor="exampleInput1">Description:</label>
+                                                            <input type="text" className="form-control" defaultValue={todo.description} name="description" placeholder="Description" onChange={(e) => onChangeInput(e)} />
+                                                        </Modal.Body>
+                                                        <Modal.Footer>
+                                                            <Button variant="secondary" onClick={handleClose}> Close</Button>
+                                                            <Button variant="primary" onClick={() => clickUpdate(todo.id)}>Submit</Button>
+                                                        </Modal.Footer>
+                                                    </Modal>{' '}
+                                                    <Button variant="primary" onClick={() => clickDelete(todo)}>Delete </Button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
                                 })
                             }
                         </tbody>
@@ -107,7 +113,7 @@ const ViewData = () => {
                 checkValue === "viewComplete" ?
                     <>
                         <h2>Completed List</h2><br />
-                        select date: <DatePicker dateFormat='dd/mm/yyyy' selected={startDate} onChange={(date) => onSelectDate(date)} />
+                        select date: <DatePicker dateFormat='dd/MM/yyyy' selected={startDate} onChange={(date) => onSelectDate(date)} />
                         <table className="table">
                             <thead>
                                 <tr>
@@ -120,15 +126,17 @@ const ViewData = () => {
                             <tbody>
                                 {
                                     completeData.map((record) => {
-                                        if (record.duedate >= record.date) {
-                                            return (
-                                                <tr key={record.id}>
-                                                    <td>{record.duedate}</td>
-                                                    <td>{record.title}</td>
-                                                    <td>{record.description}</td>
-                                                    <td>{record.date} Time: {record.time}</td>
-                                                </tr>
-                                            )
+                                        if (data === record.duedate) {
+                                            if (record.duedate >= record.date) {
+                                                return (
+                                                    <tr key={record.id}>
+                                                        <td>{record.duedate}</td>
+                                                        <td>{record.title}</td>
+                                                        <td>{record.description}</td>
+                                                        <td>{record.date} Time: {record.time}</td>
+                                                    </tr>
+                                                )
+                                            }
                                         }
                                     })
                                 }
@@ -141,23 +149,22 @@ const ViewData = () => {
                                 <thead>
                                     <tr>
                                         <th>Duedate</th>
-                                        {/* <th>Title</th>
-                                        <th>Description</th> */}
+                                        <th>Title</th>
+                                        <th>Description</th>
                                         <th>Completed Date</th>
                                         <th>Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
-                                        completeData.map((record) => {
-                                            console.log(record.duedate < record.time)
-                                            if (record.duedate < record.date) {
+                                        todos.map((record) => {
+                                            if (record.duedate < record.curTime) {
                                                 console.log("record")
                                                 return (
                                                     <tr key={record.id}>
                                                         <td>{record.duedate}</td>
-                                                        {/* <td>{record.title}</td>
-                                                        <td>{record.description}</td> */}
+                                                        <td>{record.title}</td>
+                                                        <td>{record.description}</td>
                                                         <td>{record.date} overdue</td>
                                                         <td>{record.time}</td>
                                                     </tr>
